@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Drop Alert Widget Demo</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    
+    .demo-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .demo-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    .demo-content {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .demo-section {
+      margin-bottom: 40px;
+    }
+    
+    h2 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .code-block {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0;
+      font-family: monospace;
+      overflow-x: auto;
+    }
+    
+    .code-block code {
+      white-space: pre;
+    }
+    
+    .instruction {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    
+    .instruction strong {
+      color: #3b82f6;
+    }
+    
+    .button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .button:hover {
+      background-color: #2563eb;
+    }
+    
+    .demo-footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .demo-content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <div class="demo-header">
+      <h1>Price Drop Alert Widget</h1>
+      <p class="subtitle">A lightweight, customizable widget for your dealership website</p>
+    </div>
+    
+    <div class="demo-content">
+      <div class="demo-section">
+        <h2>How It Works</h2>
+        <p class="instruction">
+          This demo page shows the <strong>Price Drop Alert Widget</strong> in action. You can see the floating button in the bottom-left corner of this page.
+        </p>
+        <p class="instruction">
+          <strong>Try it out:</strong> Click the "Price Drop Alerts" button to see the widget in action!
+        </p>
+      </div>
+      
+      <div class="demo-section">
+        <h2>Easy Installation</h2>
+        <p class="instruction">
+          Add this single line of code to your website to install the widget:
+        </p>
+        <div class="code-block">
+          <code>&lt;script src="widget.js" async&gt;&lt;/script&gt;</code>
+        </div>
+      </div>
+      
+      <div class="demo-section">
+        <h2>Customization</h2>
+        <p class="instruction">
+          Open the <strong>widget.js</strong> file and modify these settings at the top:
+        </p>
+        <div class="code-block">
+<code>const config = {
+  dealershipName: "Premium Auto Gallery", // Your dealership name
+  webhookUrl: "https://your-webhook-url.com", // Your webhook URL
+  accentColor: "#3b82f6", // Primary color
+  position: "bottom-left", // Position on screen
+  buttonText: "Price Drop Alerts", // Button text
+  logoUrl: "" // Optional logo URL
+};</code>
+        </div>
+      </div>
+      
+      <div class="demo-section">
+        <h2>Works Anywhere</h2>
+        <p class="instruction">
+          The widget works on any website platform:
+        </p>
+        <ul>
+          <li>WordPress</li>
+          <li>Shopify</li>
+          <li>Wix</li>
+          <li>Squarespace</li>
+          <li>Custom HTML websites</li>
+          <li>Dealer-specific platforms</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="demo-footer">
+      <p>For more information, see the README.md file included with this widget.</p>
+    </div>
+  </div>
+  
+  <!-- Include the widget script -->
+  <script src="widget.js" async></script>
+</body>
+</html>
