@@ -3,6 +3,7 @@
 
 const NOTIFICATIONS_KEY = 'priceDropNotifications';
 const CARS_KEY = 'carsData';
+const CAR_SELL_LEADS_KEY = 'carSellLeads';
 const WEBHOOK_URL = 'https://cloud.activepieces.com/api/v1/webhooks/H1OjUTc7VfBnkghRO9N4P';
 
 // Initialize cars data if not exists
@@ -29,7 +30,7 @@ export const saveNotification = (notification) => {
     const existing = getStoredNotifications();
     const updated = [...existing, notification];
     localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updated));
-    
+
     // Log for demonstration purposes
     if (notification.isGlobalAlert) {
       console.log(`🔔 NEW GLOBAL PRICE ALERT SUBSCRIPTION: ${notification.email}`);
@@ -45,9 +46,9 @@ export const saveNotification = (notification) => {
           timestamp: new Date().toISOString()
         }
       };
-      
+
       console.log('📤 WEBHOOK PAYLOAD:', webhookData);
-      
+
       // Send to the provided webhook URL
       fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -65,10 +66,84 @@ export const saveNotification = (notification) => {
         console.error('❌ Error sending webhook notification:', error);
       });
     }
-    
+
     return notification;
   } catch (error) {
     console.error('Error saving notification:', error);
+    throw error;
+  }
+};
+
+// Car selling leads functions
+export const getStoredCarSellLeads = () => {
+  try {
+    const stored = localStorage.getItem(CAR_SELL_LEADS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Error reading car sell leads:', error);
+    return [];
+  }
+};
+
+export const saveCarSellLead = (lead) => {
+  try {
+    const existing = getStoredCarSellLeads();
+    const updated = [...existing, lead];
+    localStorage.setItem(CAR_SELL_LEADS_KEY, JSON.stringify(updated));
+
+    // Log for demonstration purposes
+    console.log(`🚗 NEW CAR SELLING LEAD: ${lead.name} - ${lead.vehicle.year} ${lead.vehicle.make} ${lead.vehicle.model}`);
+    
+    // Send to webhook
+    const webhookData = {
+      type: 'car_selling_inquiry',
+      data: {
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        vehicle: lead.vehicle,
+        timestamp: lead.createdAt,
+        dealership: "Premium Auto Gallery",
+        source: window.location.href
+      }
+    };
+
+    console.log('📤 WEBHOOK PAYLOAD:', webhookData);
+
+    // Send to the provided webhook URL
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(webhookData)
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log('✅ Car selling lead webhook sent successfully');
+      } else {
+        console.error('❌ Failed to send car selling lead webhook', response.status);
+      }
+    })
+    .catch(error => {
+      console.error('❌ Error sending car selling lead webhook:', error);
+    });
+
+    return lead;
+  } catch (error) {
+    console.error('Error saving car sell lead:', error);
+    throw error;
+  }
+};
+
+export const updateCarSellLeadStatus = (leadId, status) => {
+  try {
+    const leads = getStoredCarSellLeads();
+    const updatedLeads = leads.map(lead => 
+      lead.id === leadId ? { ...lead, status, updatedAt: new Date().toISOString() } : lead
+    );
+    localStorage.setItem(CAR_SELL_LEADS_KEY, JSON.stringify(updatedLeads));
+    return updatedLeads;
+  } catch (error) {
+    console.error('Error updating car sell lead status:', error);
     throw error;
   }
 };
@@ -92,18 +167,18 @@ export const updateCarPrice = (carId, newPrice) => {
     if (carIndex === -1) {
       throw new Error('Car not found');
     }
-    
+
     const oldPrice = cars[carIndex].price;
     cars[carIndex].price = newPrice;
-    
+
     // Save updated cars
     localStorage.setItem(CARS_KEY, JSON.stringify(cars));
-    
+
     // If price decreased, trigger notifications
     if (newPrice < oldPrice) {
       triggerPriceDropAlerts(carId, newPrice, oldPrice);
     }
-    
+
     return cars;
   } catch (error) {
     console.error('Error updating car price:', error);
@@ -116,7 +191,7 @@ const triggerPriceDropAlerts = (carId, newPrice, oldPrice) => {
     const notifications = getStoredNotifications();
     const car = getStoredCars().find(car => car.id === carId);
     const carDetails = car ? `${car.year} ${car.make} ${car.model}` : 'Unknown vehicle';
-    
+
     const updatedNotifications = notifications.map(notification => {
       // Check if this notification should be triggered
       // Either it's for this specific car or it's a global alert for all inventory
@@ -124,7 +199,7 @@ const triggerPriceDropAlerts = (carId, newPrice, oldPrice) => {
         // In a real app, this would send an actual email/SMS
         console.log(`🚨 PRICE DROP ALERT SENT TO ${notification.email}`);
         console.log(`${carDetails} price dropped from $${oldPrice.toLocaleString()} to $${newPrice.toLocaleString()}`);
-        
+
         // Send to webhook
         const webhookData = {
           type: 'price_drop_alert',
@@ -144,9 +219,9 @@ const triggerPriceDropAlerts = (carId, newPrice, oldPrice) => {
             timestamp: new Date().toISOString()
           }
         };
-        
+
         console.log('📤 WEBHOOK PAYLOAD:', webhookData);
-        
+
         // Send to the provided webhook URL
         fetch(WEBHOOK_URL, {
           method: 'POST',
@@ -163,7 +238,7 @@ const triggerPriceDropAlerts = (carId, newPrice, oldPrice) => {
         .catch(error => {
           console.error('❌ Error sending webhook alert:', error);
         });
-        
+
         return {
           ...notification,
           status: 'sent',
@@ -175,7 +250,7 @@ const triggerPriceDropAlerts = (carId, newPrice, oldPrice) => {
       }
       return notification;
     });
-    
+
     localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updatedNotifications));
   } catch (error) {
     console.error('Error triggering price drop alerts:', error);
@@ -195,12 +270,9 @@ export const applyInventoryWideDiscount = (discountPercentage) => {
         triggerPriceDropAlerts(car.id, newPrice, oldPrice);
       }
       
-      return {
-        ...car,
-        price: newPrice
-      };
+      return { ...car, price: newPrice };
     });
-    
+
     localStorage.setItem(CARS_KEY, JSON.stringify(updatedCars));
     return updatedCars;
   } catch (error) {

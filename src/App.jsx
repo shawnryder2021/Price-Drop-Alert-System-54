@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import InventoryPage from './pages/InventoryPage';
 import AdminDashboard from './pages/AdminDashboard';
-import FloatingPriceDropWidget from './components/FloatingPriceDropWidget';
+import FloatingCarSellWidget from './components/FloatingCarSellWidget';
 import './App.css';
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
         
-        {/* Floating widget appears on all pages */}
-        <FloatingPriceDropWidget />
+        {/* Only the car selling widget appears on all pages */}
+        <FloatingCarSellWidget />
       </div>
     </Router>
   );
