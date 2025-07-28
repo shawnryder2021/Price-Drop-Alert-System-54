@@ -25,11 +25,11 @@ const FloatingCarSellWidget = () => {
   const [errors, setErrors] = useState({});
 
   const carMakes = [
-    'Acura', 'Audi', 'BMW', 'Buick', 'Cadillac', 'Chevrolet', 'Chrysler', 
-    'Dodge', 'Ford', 'GMC', 'Honda', 'Hyundai', 'Infiniti', 'Jaguar', 
-    'Jeep', 'Kia', 'Land Rover', 'Lexus', 'Lincoln', 'Mazda', 
-    'Mercedes-Benz', 'Mitsubishi', 'Nissan', 'Porsche', 'Ram', 
-    'Subaru', 'Tesla', 'Toyota', 'Volkswagen', 'Volvo', 'Other'
+    'Acura', 'Audi', 'BMW', 'Buick', 'Cadillac', 'Chevrolet', 'Chrysler',
+    'Dodge', 'Ford', 'GMC', 'Honda', 'Hyundai', 'Infiniti', 'Jaguar', 'Jeep',
+    'Kia', 'Land Rover', 'Lexus', 'Lincoln', 'Mazda', 'Mercedes-Benz',
+    'Mitsubishi', 'Nissan', 'Porsche', 'Ram', 'Subaru', 'Tesla', 'Toyota',
+    'Volkswagen', 'Volvo', 'Other'
   ];
 
   const conditions = ['Excellent', 'Very Good', 'Good', 'Fair', 'Poor'];
@@ -49,7 +49,7 @@ const FloatingCarSellWidget = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -58,7 +58,6 @@ const FloatingCarSellWidget = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -71,17 +70,16 @@ const FloatingCarSellWidget = () => {
     if (!formData.model.trim()) newErrors.model = 'Model is required';
     if (!formData.mileage) newErrors.mileage = 'Mileage is required';
     if (!formData.condition) newErrors.condition = 'Condition is required';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setIsSubmitting(true);
-      
       try {
         const lead = {
           id: Date.now().toString(),
@@ -102,7 +100,7 @@ const FloatingCarSellWidget = () => {
 
         await saveCarSellLead(lead);
         setIsSubmitted(true);
-        
+
         // Auto close after success
         setTimeout(() => {
           setIsExpanded(false);
@@ -137,7 +135,7 @@ const FloatingCarSellWidget = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-6 right-6 z-50"
+          className="fixed bottom-6 left-6 z-50"
         >
           {/* Floating Button */}
           {!isExpanded && (
