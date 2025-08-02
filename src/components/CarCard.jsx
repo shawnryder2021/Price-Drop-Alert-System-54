@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
-import PriceDropWidget from './PriceDropWidget';
 
-const { FiCalendar, FiSettings, FiNavigation, FiBell } = FiIcons;
+const { FiCalendar, FiSettings, FiNavigation } = FiIcons;
 
 const CarCard = ({ car }) => {
-  const [showPriceAlert, setShowPriceAlert] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -60,35 +57,19 @@ const CarCard = ({ car }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3">
-          <button className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+        <div className="space-y-3">
+          <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
             View Details
           </button>
-          <button
-            onClick={() => setShowPriceAlert(true)}
-            className="flex items-center justify-center px-4 py-3 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
-            title="Get notified if price drops"
-          >
-            <SafeIcon icon={FiBell} className="w-5 h-5" />
-          </button>
+          
+          <div className="text-center">
+            <p className="text-sm text-gray-600 mb-2">Want to sell your car instead?</p>
+            <p className="text-sm text-green-600 font-medium">
+              💰 Use our widget to get an instant cash offer!
+            </p>
+          </div>
         </div>
-
-        {/* Price Drop Alert Text */}
-        <button
-          onClick={() => setShowPriceAlert(true)}
-          className="w-full mt-3 text-sm text-blue-600 hover:text-blue-700 transition-colors text-center py-2 hover:bg-blue-50 rounded-lg"
-        >
-          💰 Notify me if the price drops
-        </button>
       </div>
-
-      {/* Price Drop Widget Modal */}
-      {showPriceAlert && (
-        <PriceDropWidget
-          car={car}
-          onClose={() => setShowPriceAlert(false)}
-        />
-      )}
     </motion.div>
   );
 };

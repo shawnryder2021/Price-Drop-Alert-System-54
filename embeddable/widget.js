@@ -1,7 +1,7 @@
 /**
  * Car Dealership Car Selling Widget
  * Version: 1.0.0
- * 
+ *
  * This standalone widget can be embedded on any website to collect
  * information from people looking to sell their cars to dealerships.
  */
@@ -345,7 +345,6 @@
           </svg>
         </button>
       </div>
-      
       <div class="pda-widget-body">
         <div class="pda-widget-form-container">
           <form class="pda-widget-form">
@@ -354,19 +353,19 @@
               <input type="text" id="pda-name" class="pda-widget-input" placeholder="Enter your full name" required>
               <div class="pda-error-message" id="pda-name-error"></div>
             </div>
-            
+
             <div class="pda-widget-field">
               <label class="pda-widget-label" for="pda-email">Email Address *</label>
               <input type="email" id="pda-email" class="pda-widget-input" placeholder="Enter your email" required>
               <div class="pda-error-message" id="pda-email-error"></div>
             </div>
-            
+
             <div class="pda-widget-field">
               <label class="pda-widget-label" for="pda-phone">Phone Number *</label>
               <input type="tel" id="pda-phone" class="pda-widget-input" placeholder="Enter your phone number" required>
               <div class="pda-error-message" id="pda-phone-error"></div>
             </div>
-            
+
             <div class="pda-widget-row">
               <div class="pda-widget-field">
                 <label class="pda-widget-label" for="pda-year">Year *</label>
@@ -375,7 +374,6 @@
                 </select>
                 <div class="pda-error-message" id="pda-year-error"></div>
               </div>
-              
               <div class="pda-widget-field">
                 <label class="pda-widget-label" for="pda-make">Make *</label>
                 <select id="pda-make" class="pda-widget-select" required>
@@ -415,20 +413,24 @@
                 <div class="pda-error-message" id="pda-make-error"></div>
               </div>
             </div>
-            
+
             <div class="pda-widget-field">
               <label class="pda-widget-label" for="pda-model">Model *</label>
               <input type="text" id="pda-model" class="pda-widget-input" placeholder="Enter vehicle model" required>
               <div class="pda-error-message" id="pda-model-error"></div>
             </div>
-            
+
+            <div class="pda-widget-field">
+              <label class="pda-widget-label" for="pda-vin">VIN (Optional)</label>
+              <input type="text" id="pda-vin" class="pda-widget-input" placeholder="Enter vehicle identification number">
+            </div>
+
             <div class="pda-widget-row">
               <div class="pda-widget-field">
                 <label class="pda-widget-label" for="pda-mileage">Mileage (KM) *</label>
                 <input type="number" id="pda-mileage" class="pda-widget-input" placeholder="Enter mileage" required>
                 <div class="pda-error-message" id="pda-mileage-error"></div>
               </div>
-              
               <div class="pda-widget-field">
                 <label class="pda-widget-label" for="pda-condition">Condition *</label>
                 <select id="pda-condition" class="pda-widget-select" required>
@@ -442,12 +444,12 @@
                 <div class="pda-error-message" id="pda-condition-error"></div>
               </div>
             </div>
-            
+
             <div class="pda-widget-field">
               <label class="pda-widget-label" for="pda-details">Additional Details</label>
               <textarea id="pda-details" class="pda-widget-textarea" placeholder="Tell us about your vehicle's features, maintenance history, any issues, etc."></textarea>
             </div>
-            
+
             <button type="submit" class="pda-widget-submit">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
@@ -458,7 +460,7 @@
             </button>
           </form>
         </div>
-        
+
         <div class="pda-widget-success" style="display: none;">
           <div class="pda-widget-success-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -472,7 +474,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="pda-widget-footer">
         We respect your privacy and will never share your information.
       </div>
@@ -521,6 +523,7 @@
     const yearInput = document.getElementById('pda-year');
     const makeInput = document.getElementById('pda-make');
     const modelInput = document.getElementById('pda-model');
+    const vinInput = document.getElementById('pda-vin');
     const mileageInput = document.getElementById('pda-mileage');
     const conditionInput = document.getElementById('pda-condition');
     const detailsInput = document.getElementById('pda-details');
@@ -592,6 +595,7 @@
           year: yearInput.value,
           make: makeInput.value,
           model: modelInput.value.trim(),
+          vin: vinInput.value.trim() || 'Not provided',
           mileage: parseInt(mileageInput.value),
           condition: conditionInput.value,
           details: detailsInput.value.trim() || 'No additional details provided'
@@ -627,7 +631,7 @@
       setTimeout(() => {
         const modal = document.querySelector('.pda-widget-modal');
         modal.classList.remove('active');
-        
+
         // Reset form after a delay
         setTimeout(() => {
           formContainer.style.display = 'block';

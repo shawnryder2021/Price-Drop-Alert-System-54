@@ -24,49 +24,37 @@ const FloatingPriceDropWidget = () => {
     const timer = setTimeout(() => {
       setIsOpen(true);
     }, 1500);
-    
     return () => clearTimeout(timer);
   }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-    
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
     }
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (validateForm()) {
       setIsSubmitting(true);
-      
       try {
         const notification = {
           id: Date.now().toString(),
@@ -79,14 +67,13 @@ const FloatingPriceDropWidget = () => {
           createdAt: new Date().toISOString(),
           isGlobalAlert: formData.allCars
         };
-        
+
         await saveNotification(notification);
         setIsSubmitted(true);
-        
+
         // Auto close after success
         setTimeout(() => {
           setIsExpanded(false);
-          
           // After animation completes, reset form
           setTimeout(() => {
             setIsSubmitted(false);
@@ -146,7 +133,7 @@ const FloatingPriceDropWidget = () => {
                       </div>
                       <h3 className="font-bold text-lg">Price Drop Alerts</h3>
                     </div>
-                    <button 
+                    <button
                       onClick={() => setIsExpanded(false)}
                       className="p-1 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
                     >
@@ -273,7 +260,12 @@ const FloatingPriceDropWidget = () => {
 
                 {/* Footer */}
                 <div className="px-5 py-3 bg-gray-50 text-xs text-gray-500 text-center">
-                  We respect your privacy and will never share your information.
+                  <span>We respect your privacy and will never share your information.</span>
+                  <div className="mt-1 text-blue-600">
+                    <a href="https://shawnryder.com" target="_blank" rel="noopener noreferrer">
+                      Powered by Shawn Ryder Digital
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             )}

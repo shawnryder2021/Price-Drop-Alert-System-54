@@ -14,8 +14,20 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
         
-        {/* Only the car selling widget appears on all pages */}
+        {/* Main car selling widget */}
         <FloatingCarSellWidget />
+        
+        {/* Shawn Ryder Digital Attribution */}
+        <div className="fixed bottom-2 right-2 z-30">
+          <a 
+            href="https://shawnryder.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-xs text-gray-500 hover:text-blue-600 transition-colors"
+          >
+            Powered by Shawn Ryder Digital
+          </a>
+        </div>
       </div>
     </Router>
   );

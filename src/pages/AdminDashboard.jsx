@@ -3,19 +3,9 @@ import { motion } from 'framer-motion';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 import PriceUpdateModal from '../components/PriceUpdateModal';
-import { 
-  getStoredNotifications, 
-  getStoredCars, 
-  updateCarPrice, 
-  applyInventoryWideDiscount,
-  getStoredCarSellLeads,
-  updateCarSellLeadStatus 
-} from '../utils/storage';
+import { getStoredNotifications, getStoredCars, updateCarPrice, applyInventoryWideDiscount, getStoredCarSellLeads, updateCarSellLeadStatus } from '../utils/storage';
 
-const { 
-  FiDollarSign, FiBell, FiTrendingDown, FiUsers, FiEdit3, FiArrowLeft, 
-  FiPercent, FiGlobe, FiCar, FiPhone, FiMail, FiCalendar, FiEye, FiCheck 
-} = FiIcons;
+const { FiDollarSign, FiBell, FiTrendingDown, FiUsers, FiEdit3, FiArrowLeft, FiPercent, FiGlobe, FiCar, FiPhone, FiMail, FiCalendar, FiEye, FiCheck, FiExternalLink } = FiIcons;
 
 const AdminDashboard = () => {
   const [notifications, setNotifications] = useState([]);
@@ -77,10 +67,24 @@ const AdminDashboard = () => {
                 Back to Inventory
               </a>
               <div className="border-l border-gray-300 pl-4">
-                <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                <div className="flex items-center">
+                  <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                  <div className="ml-3 px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                    Powered by Shawn Ryder Digital
+                  </div>
+                </div>
                 <p className="text-gray-600 mt-1">Manage price alerts, leads, and car selling inquiries</p>
               </div>
             </div>
+            <a 
+              href="https://shawnryder.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 transition-colors flex items-center"
+            >
+              Visit Shawn Ryder Digital
+              <SafeIcon icon={FiExternalLink} className="ml-1 w-4 h-4" />
+            </a>
           </div>
         </div>
       </header>
@@ -91,31 +95,19 @@ const AdminDashboard = () => {
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'overview'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'overview' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
             >
               Overview
             </button>
             <button
               onClick={() => setActiveTab('car-selling')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'car-selling'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'car-selling' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
             >
               Car Selling Leads ({newCarSellLeads})
             </button>
             <button
               onClick={() => setActiveTab('price-alerts')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'price-alerts'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'price-alerts' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
             >
               Price Alerts
             </button>
@@ -318,11 +310,11 @@ const AdminDashboard = () => {
                                 {lead.vehicle.mileage.toLocaleString()} KM • {lead.vehicle.condition}
                               </p>
                             </div>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              lead.status === 'new' 
-                                ? 'bg-blue-100 text-blue-800' 
-                                : 'bg-green-100 text-green-800'
-                            }`}>
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                lead.status === 'new' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                              }`}
+                            >
                               {lead.status === 'new' ? 'New' : 'Contacted'}
                             </span>
                           </div>
@@ -378,11 +370,11 @@ const AdminDashboard = () => {
                           </div>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            lead.status === 'new' 
-                              ? 'bg-blue-100 text-blue-800' 
-                              : 'bg-green-100 text-green-800'
-                          }`}>
+                          <span
+                            className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              lead.status === 'new' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                            }`}
+                          >
                             {lead.status === 'new' ? 'New Lead' : 'Contacted'}
                           </span>
                           {lead.status === 'new' && (
@@ -396,7 +388,6 @@ const AdminDashboard = () => {
                           )}
                         </div>
                       </div>
-                      
                       <div className="bg-gray-50 rounded-lg p-4">
                         <h4 className="font-medium text-gray-900 mb-3">Vehicle Details</h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -421,14 +412,19 @@ const AdminDashboard = () => {
                           <p className="text-sm text-gray-600">Mileage</p>
                           <p className="font-medium">{lead.vehicle.mileage.toLocaleString()} KM</p>
                         </div>
-                        {lead.vehicle.details && (
+                        {lead.vehicle.vin && lead.vehicle.vin !== 'Not provided' && (
+                          <div className="mt-4">
+                            <p className="text-sm text-gray-600">VIN</p>
+                            <p className="font-medium">{lead.vehicle.vin}</p>
+                          </div>
+                        )}
+                        {lead.vehicle.details && lead.vehicle.details !== 'No additional details provided' && (
                           <div className="mt-4">
                             <p className="text-sm text-gray-600">Additional Details</p>
                             <p className="text-sm text-gray-800 mt-1">{lead.vehicle.details}</p>
                           </div>
                         )}
                       </div>
-                      
                       <div className="flex items-center justify-between mt-4">
                         <div className="flex items-center text-sm text-gray-500">
                           <SafeIcon icon={FiCalendar} className="w-4 h-4 mr-1" />
@@ -486,20 +482,18 @@ const AdminDashboard = () => {
                             <p className="text-sm text-gray-600">{notification.phone}</p>
                           )}
                           <p className="text-xs text-gray-500 mt-2">
-                            Interested in: {notification.carId === 'all' ? 
-                              <span className="font-medium text-purple-600">All inventory</span> : 
-                              notification.carDetails}
+                            Interested in: {notification.carId === 'all' ? <span className="font-medium text-purple-600">All inventory</span> : notification.carDetails}
                           </p>
                           <p className="text-xs text-gray-500">
                             Registered: {new Date(notification.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                         <div className="flex flex-col items-end">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            notification.status === 'active' 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-blue-100 text-blue-800'
-                          }`}>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              notification.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+                            }`}
+                          >
                             {notification.status === 'active' ? 'Active' : 'Alert Sent'}
                           </span>
                           {notification.carId === 'all' && (
@@ -517,6 +511,32 @@ const AdminDashboard = () => {
           </motion.div>
         )}
       </main>
+
+      {/* Footer with Branding */}
+      <footer className="bg-white border-t border-gray-200 py-8 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="mb-4 md:mb-0">
+              <p className="text-gray-500 text-sm">
+                © {new Date().getFullYear()} Premium Auto Gallery. All rights reserved.
+              </p>
+            </div>
+            <div className="flex flex-col items-center md:items-end">
+              <p className="text-gray-700 font-medium">Powered by</p>
+              <a 
+                href="https://shawnryder.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-600 hover:text-blue-800 transition-colors flex items-center font-bold"
+              >
+                Shawn Ryder Digital
+                <SafeIcon icon={FiExternalLink} className="ml-1 w-4 h-4" />
+              </a>
+              <p className="text-gray-500 text-xs mt-1">Automotive Digital Marketing Solutions</p>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       {/* Price Update Modal */}
       {showPriceModal && selectedCar && (

@@ -1,5 +1,7 @@
-// Simple localStorage-based storage for demo purposes
-// In production, this would connect to a real database
+// Simple localStorage-based storage for demo purposes 
+// In production, this would connect to a real database 
+
+import { sampleCars } from '../data/sampleData.js';
 
 const NOTIFICATIONS_KEY = 'priceDropNotifications';
 const CARS_KEY = 'carsData';
@@ -10,7 +12,6 @@ const WEBHOOK_URL = 'https://cloud.activepieces.com/api/v1/webhooks/H1OjUTc7VfBn
 export const initializeCarsData = () => {
   const existingCars = localStorage.getItem(CARS_KEY);
   if (!existingCars) {
-    const { sampleCars } = require('../data/sampleData');
     localStorage.setItem(CARS_KEY, JSON.stringify(sampleCars));
   }
 };
@@ -34,7 +35,7 @@ export const saveNotification = (notification) => {
     // Log for demonstration purposes
     if (notification.isGlobalAlert) {
       console.log(`🔔 NEW GLOBAL PRICE ALERT SUBSCRIPTION: ${notification.email}`);
-      
+
       // Send to webhook
       const webhookData = {
         type: 'price_drop_subscription',
@@ -43,10 +44,10 @@ export const saveNotification = (notification) => {
           email: notification.email,
           phone: notification.phone || 'Not provided',
           subscriptionType: notification.isGlobalAlert ? 'global' : 'specific',
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          source: 'Shawn Ryder Digital Widget'
         }
       };
-
       console.log('📤 WEBHOOK PAYLOAD:', webhookData);
 
       // Send to the provided webhook URL
@@ -55,16 +56,16 @@ export const saveNotification = (notification) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(webhookData)
       })
-      .then(response => {
-        if (response.ok) {
-          console.log('✅ Webhook notification sent successfully');
-        } else {
-          console.error('❌ Failed to send webhook notification', response.status);
-        }
-      })
-      .catch(error => {
-        console.error('❌ Error sending webhook notification:', error);
-      });
+        .then(response => {
+          if (response.ok) {
+            console.log('✅ Webhook notification sent successfully');
+          } else {
+            console.error('❌ Failed to send webhook notification', response.status);
+          }
+        })
+        .catch(error => {
+          console.error('❌ Error sending webhook notification:', error);
+        });
     }
 
     return notification;
@@ -93,7 +94,7 @@ export const saveCarSellLead = (lead) => {
 
     // Log for demonstration purposes
     console.log(`🚗 NEW CAR SELLING LEAD: ${lead.name} - ${lead.vehicle.year} ${lead.vehicle.make} ${lead.vehicle.model}`);
-    
+
     // Send to webhook
     const webhookData = {
       type: 'car_selling_inquiry',
@@ -104,10 +105,10 @@ export const saveCarSellLead = (lead) => {
         vehicle: lead.vehicle,
         timestamp: lead.createdAt,
         dealership: "Premium Auto Gallery",
-        source: window.location.href
+        source: "Shawn Ryder Digital Widget",
+        pageUrl: window.location.href
       }
     };
-
     console.log('📤 WEBHOOK PAYLOAD:', webhookData);
 
     // Send to the provided webhook URL
@@ -116,16 +117,16 @@ export const saveCarSellLead = (lead) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(webhookData)
     })
-    .then(response => {
-      if (response.ok) {
-        console.log('✅ Car selling lead webhook sent successfully');
-      } else {
-        console.error('❌ Failed to send car selling lead webhook', response.status);
-      }
-    })
-    .catch(error => {
-      console.error('❌ Error sending car selling lead webhook:', error);
-    });
+      .then(response => {
+        if (response.ok) {
+          console.log('✅ Car selling lead webhook sent successfully');
+        } else {
+          console.error('❌ Failed to send car selling lead webhook', response.status);
+        }
+      })
+      .catch(error => {
+        console.error('❌ Error sending car selling lead webhook:', error);
+      });
 
     return lead;
   } catch (error) {
@@ -138,7 +139,7 @@ export const updateCarSellLeadStatus = (leadId, status) => {
   try {
     const leads = getStoredCarSellLeads();
     const updatedLeads = leads.map(lead => 
-      lead.id === leadId ? { ...lead, status, updatedAt: new Date().toISOString() } : lead
+      lead.id === leadId ? { ...lead, status, updatedAt: new Date().toISOString() } : lead 
     );
     localStorage.setItem(CAR_SELL_LEADS_KEY, JSON.stringify(updatedLeads));
     return updatedLeads;
@@ -163,7 +164,6 @@ export const updateCarPrice = (carId, newPrice) => {
   try {
     const cars = getStoredCars();
     const carIndex = cars.findIndex(car => car.id === carId);
-    
     if (carIndex === -1) {
       throw new Error('Car not found');
     }
@@ -216,10 +216,10 @@ const triggerPriceDropAlerts = (carId, newPrice, oldPrice) => {
               difference: oldPrice - newPrice,
               percentageReduction: ((oldPrice - newPrice) / oldPrice * 100).toFixed(1)
             },
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            source: "Shawn Ryder Digital Widget"
           }
         };
-
         console.log('📤 WEBHOOK PAYLOAD:', webhookData);
 
         // Send to the provided webhook URL
@@ -228,16 +228,16 @@ const triggerPriceDropAlerts = (carId, newPrice, oldPrice) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(webhookData)
         })
-        .then(response => {
-          if (response.ok) {
-            console.log('✅ Webhook alert sent successfully');
-          } else {
-            console.error('❌ Failed to send webhook alert', response.status);
-          }
-        })
-        .catch(error => {
-          console.error('❌ Error sending webhook alert:', error);
-        });
+          .then(response => {
+            if (response.ok) {
+              console.log('✅ Webhook alert sent successfully');
+            } else {
+              console.error('❌ Failed to send webhook alert', response.status);
+            }
+          })
+          .catch(error => {
+            console.error('❌ Error sending webhook alert:', error);
+          });
 
         return {
           ...notification,
@@ -264,12 +264,12 @@ export const applyInventoryWideDiscount = (discountPercentage) => {
     const updatedCars = cars.map(car => {
       const oldPrice = car.price;
       const newPrice = Math.round(oldPrice * (1 - discountPercentage / 100));
-      
+
       // If price decreased, trigger notifications for this car
       if (newPrice < oldPrice) {
         triggerPriceDropAlerts(car.id, newPrice, oldPrice);
       }
-      
+
       return { ...car, price: newPrice };
     });
 

@@ -4,7 +4,7 @@ import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
 import { saveNotification } from '../utils/storage';
 
-const { FiX, FiBell, FiCheck, FiDollarSign } = FiIcons;
+const { FiX, FiBell, FiCheck, FiDollarSign, FiExternalLink } = FiIcons;
 
 const PriceDropWidget = ({ car, onClose }) => {
   const [formData, setFormData] = useState({
@@ -18,43 +18,32 @@ const PriceDropWidget = ({ car, onClose }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
+    setFormData(prev => ({ ...prev, [name]: value }));
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
     }
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (validateForm()) {
       setIsSubmitting(true);
-      
       try {
         const notification = {
           id: Date.now().toString(),
@@ -67,10 +56,10 @@ const PriceDropWidget = ({ car, onClose }) => {
           status: 'active',
           createdAt: new Date().toISOString()
         };
-        
+
         await saveNotification(notification);
         setIsSubmitted(true);
-        
+
         // Auto close after 2 seconds
         setTimeout(() => {
           onClose();
@@ -210,10 +199,23 @@ const PriceDropWidget = ({ car, onClose }) => {
               </form>
 
               {/* Disclaimer */}
-              <p className="text-xs text-gray-500 mt-4 text-center">
-                We'll only contact you if the price drops on this specific vehicle.
-                Your information is kept secure and private.
-              </p>
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <p className="text-xs text-gray-500 text-center">
+                  We'll only contact you if the price drops on this specific vehicle. 
+                  Your information is kept secure and private.
+                </p>
+                <div className="text-center mt-2">
+                  <a 
+                    href="https://shawnryder.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-blue-600 hover:text-blue-800 transition-colors flex items-center justify-center text-xs"
+                  >
+                    Powered by Shawn Ryder Digital
+                    <SafeIcon icon={FiExternalLink} className="ml-1 w-3 h-3" />
+                  </a>
+                </div>
+              </div>
             </>
           ) : (
             /* Success State */
@@ -229,6 +231,17 @@ const PriceDropWidget = ({ car, onClose }) => {
                 <p className="text-sm text-blue-800">
                   💡 <strong>Pro tip:</strong> Price drops happen fast - you'll be among the first to know!
                 </p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <a 
+                  href="https://shawnryder.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-blue-600 hover:text-blue-800 transition-colors flex items-center justify-center text-sm"
+                >
+                  Powered by Shawn Ryder Digital
+                  <SafeIcon icon={FiExternalLink} className="ml-1 w-4 h-4" />
+                </a>
               </div>
             </div>
           )}
