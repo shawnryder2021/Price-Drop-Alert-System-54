@@ -9,7 +9,7 @@
 (function() {
   // Configuration - EDIT THESE VALUES
   const config = {
-    dealershipName: "Brown's Volkswagen", // Your dealership name
+    dealershipName: "Premium Auto Gallery", // Your dealership name
     webhookUrl: "https://cloud.activepieces.com/api/v1/webhooks/H1OjUTc7VfBnkghRO9N4P", // Your webhook URL
     accentColor: "#3b82f6", // Primary color (default: blue)
     position: "bottom-left", // Options: bottom-left, bottom-right, top-left, top-right
